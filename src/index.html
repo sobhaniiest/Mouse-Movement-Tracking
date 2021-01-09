@@ -5,9 +5,42 @@
   <title>MouseMovementTracking</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167612694-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-167612694-1');
+  </script>
 </head>
-<body>
+<body class="mat-typography" onmouseover="getCoords(event)">
+  <script>
+    var data = '';
+    function getCoords(event) {
+      var x = event.pageX;
+      var y = event.pageY;
+      data = data + '(' + x + ','  + y + ');';
+    }
+    (function(history) {
+        var pushState = history.pushState;  
+        history.pushState = function(state) {
+          console.log('URL Changed');
+          data = data + 'user:' + 'Unique Key' + ';';
+          data = data + 'page:' + location.pathname + ';';
+          data = data + 'width:' + window.outerWidth + ';';
+          data = data + 'height:' + window.outerHeight + ';';
+          gtag('event', 'mouse_movement', { event_label: data });
+          data = '';
+          return pushState.apply(history, arguments);
+      };
+    })(window.history);
+  </script>
   <app-root></app-root>
 </body>
 </html>
